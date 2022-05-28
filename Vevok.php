@@ -22,6 +22,7 @@ include_once "connection.php";
     <div class="container-fluid">
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <div class="form-row">
+            <div class="col-1">Vevők</div>
                 <div class="col-2">
                     <input type="text" class="form-control" id="InputNev" placeholder="Név" name="InputNev">
                 </div>

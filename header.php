@@ -15,6 +15,12 @@
                 <li class="nav-item">
                     <a class="nav-link" href="./Termszolg.php">Termékek és szolgáltatások</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./Bevetelezes.php">Bevételezés</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./Kiadas.php">Kiadás</a>
+                </li>
             </ul>
         </div>
     </nav>

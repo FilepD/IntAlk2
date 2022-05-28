@@ -55,7 +55,7 @@ $Telefon = $row_act[3];
                     <input type="hidden" name="id" value="<?php echo $id ?>">
                     <button id="updateVevBtn" type="submit" class="btn btn-primary">Mentés</button>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <button id="megseBtn" type="reset" class="btn btn-primary">Mégse</button>
+                    <a href=./Vevok.php id="megseBtn" type="reset" class="btn btn-primary">Mégse</a>
                     <!-- gombok -->
                     <br>
                 </div>

@@ -38,7 +38,8 @@ $Telefon = $row_act[3];
                     <input type="hidden" name="id" value="<?php echo $id ?>">
                     <div class=" input-group input-group-sm mb-3 inputField">
                         <span class="input-group-text" id="inputGroup-sizing-s">Név</span>
-                        <input id="Név" name="Nev" type="text" value="<?php echo $Nev ?>" class="form-control" onchange="submitSetEnable()" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" required>
+                        <input id="Név" name="Nev" type="text" value="<?php echo $Nev ?>
+                        " class="form-control" onchange="submitSetEnable()" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" required>
                     </div>
                     <div class="input-group input-group-sm mb-3 inputField">
                         <span class="input-group-text" id="inputGroup-sizing-sm">Cím</span>
@@ -55,7 +56,7 @@ $Telefon = $row_act[3];
                     <input type="hidden" name="id" value="<?php echo $id ?>">
                     <button id="updateBeszBtn" type="submit" class="btn btn-primary">Mentés</button>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <button id="megseBtn" type="reset" class="btn btn-primary">Mégse</button>
+                    <a href=./Beszallitok.php id="megseBtn" type="reset" class="btn btn-primary">Mégse</a>
                     <!-- gombok -->
                     <br>
                 </div>

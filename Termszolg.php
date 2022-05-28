@@ -11,11 +11,12 @@ require_once "head.php"
     <div class="container-fluid">
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <div class="form-row">
+            <div class="col-1">Termékek és Szolgáltatások</div>
                 <div class="col-2">
                     <input type="text" class="form-control" id="InputNev" placeholder="Név" name="InputNev">
                 </div>
                 <div class="col-2">
-                    <input type="text" class="form-control" id="InputAr" placeholder="Ár" name="InputAr">
+                    <input type="number" class="form-control" id="InputAr" placeholder="Ár" name="InputAr">
                 </div>
                 <div class="col-3">
                     <input type="text" class="form-control" id="InputLeiras" placeholder="Leírás" name="InputLeiras">
@@ -55,10 +56,10 @@ require_once "head.php"
                             $param_Leiras = null;
                             mysqli_stmt_close($stmt);
                         }
-                        //mysqli_close($conn);
                     }
                     ?>
                 </div>
+                <div class="container" id="errorMessage"></div>
             </div>
         </form>
     </div> <!-- formnak -->
@@ -69,6 +70,8 @@ require_once "head.php"
                     <th>ID</th>
                     <th>Név</th>
                     <th>Ár</th>
+                    <th>Mennyiség</th>
+                    <th>Összár</th>
                     <th>Leírás</th>
                     <th>Módosít</th>
                     <th>Töröl</th>
@@ -80,12 +83,14 @@ require_once "head.php"
                 $records = mysqli_query($conn, $sql);
 
 
-                if (mysqli_num_rows($records) > 0) {                    
+                if (mysqli_num_rows($records) > 0) {
                     while ($row = mysqli_fetch_assoc($records)) {
                         echo '<tr>',
                         '<td>', $row["ID"], '</td>',
                         '<td>', $row["Nev"], '</td>',
                         '<td>', $row["Ar"], '</td>',
+                        '<td>', dinamikus($row["ID"], $conn), '</td>',
+                        '<td>', osszar($row["ID"],$row["Ar"], $conn), '</td>',
                         '<td>', $row["Leiras"], '</td>',
                         '<td><a href="UpdateForm.php?id=' . $row["ID"] . '" class="btn btn-primary btn-sm max">Módosítás</a></td>',
                         '<td><a href="delete.php?id=' . $row["ID"] . '" class="btn btn-danger btn-sm max">Törlés</a></td>',
@@ -94,17 +99,59 @@ require_once "head.php"
                 } else {
                     echo "0 results ";
                 }
+                function dinamikus($ID, $conn)
+                {
 
+                    $bevsql = "SELECT SUM(Mennyiség) as sum FROM bevetelezes WHERE TermSzolgID =" . $ID;
+                    $kiadsql = "SELECT SUM(Mennyiség) as sum FROM kiadas WHERE TermSzolgID =" . $ID;
+                    $bevquery = mysqli_query($conn, $bevsql);
+                    $kiadquery = mysqli_query($conn, $kiadsql);
+
+                    if (mysqli_num_rows($bevquery) > 0) {
+                        if (mysqli_num_rows($kiadquery)<=0) {
+                          echo mysqli_fetch_assoc($bevquery)["sum"];
+                        } else {
+                            $bevmenny = mysqli_fetch_assoc($bevquery);
+                            $kiadmenny = mysqli_fetch_assoc($kiadquery);
+                            $szamol = $bevmenny["sum"]-$kiadmenny["sum"];
+                            echo $szamol;
+                        }
+                    } else {
+                        echo "nulla elem";
+                    }
+                }
+                function osszar($ID, $Ar, $conn){
+                    $bevsql = "SELECT SUM(Mennyiség) as sum FROM bevetelezes WHERE TermSzolgID =" . $ID;
+                    $kiadsql = "SELECT SUM(Mennyiség) as sum FROM kiadas WHERE TermSzolgID =" . $ID;
+                    $bevquery = mysqli_query($conn, $bevsql);
+                    $kiadquery = mysqli_query($conn, $kiadsql);
+
+                    if (mysqli_num_rows($bevquery) > 0) {
+                        if (mysqli_num_rows($kiadquery)<=0) {
+                          echo (mysqli_fetch_assoc($bevquery)["sum"]*$Ar);
+                        } else {
+                            $bevmenny = mysqli_fetch_assoc($bevquery);
+                            $kiadmenny = mysqli_fetch_assoc($kiadquery);
+                            $szamol = $bevmenny["sum"]-$kiadmenny["sum"];
+                            echo ($szamol*$Ar);
+                        }
+                    } else {
+                        echo 0;
+                    }
+                }
                 ?>
             </tbody>
     </div> <!-- adatbázishoz -->
 
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
     </script>
     <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
 </body>
